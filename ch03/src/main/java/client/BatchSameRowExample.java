@@ -1,6 +1,5 @@
 package client;
 
-// cc BatchSameRowExample Example application using batch operations, modifying the same row
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +18,10 @@ import org.apache.hadoop.hbase.util.Bytes;
 
 import util.HBaseHelper;
 
+/**
+ * cc BatchSameRowExample Example application using batch operations, modifying the same row
+ * @author gaowenfeng
+ */
 public class BatchSameRowExample {
 
   private final static byte[] ROW1 = Bytes.toBytes("row1");
@@ -50,7 +53,8 @@ public class BatchSameRowExample {
     batch.add(get1);
 
     Delete delete = new Delete(ROW1);
-    delete.addColumns(COLFAM1, QUAL1, 3L); // co BatchSameRowExample-1-AddDelete Delete the row that was just put above.
+    // co BatchSameRowExample-1-AddDelete Delete the row that was just put above.
+    delete.addColumns(COLFAM1, QUAL1, 3L);
     batch.add(delete);
 
     Get get2 = new Get(ROW1);

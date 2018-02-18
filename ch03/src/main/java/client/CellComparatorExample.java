@@ -1,6 +1,5 @@
 package client;
 
-// cc CellComparatorExample Shows how to use the cell scanner
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -10,6 +9,10 @@ import org.apache.hadoop.hbase.CellScanner;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.util.Bytes;
 
+/**
+ * cc CellComparatorExample Shows how to use the cell scanner
+ * @author gaowenfeng
+ */
 public class CellComparatorExample {
 
   public static void main(String[] args) throws Exception {

@@ -1,6 +1,5 @@
 package client;
 
-// cc GetMaxResultsRowOffsetExample1 Retrieves parts of a row with offset and limit
 import java.io.IOException;
 
 import org.apache.hadoop.conf.Configuration;
@@ -17,6 +16,10 @@ import org.apache.hadoop.hbase.util.Bytes;
 
 import util.HBaseHelper;
 
+/**
+ * cc GetMaxResultsRowOffsetExample1 Retrieves parts of a row with offset and limit
+ * @author gaowenfeng
+ */
 public class GetMaxResultsRowOffsetExample1 {
 
   public static void main(String[] args) throws IOException {
@@ -39,7 +42,8 @@ public class GetMaxResultsRowOffsetExample1 {
     table.put(put);
 
     Get get1 = new Get(Bytes.toBytes("row1"));
-    get1.setMaxResultsPerColumnFamily(10); // co GetMaxResultsRowOffsetExample1-1-Get1 Ask for ten cells to be returned at most.
+    // co GetMaxResultsRowOffsetExample1-1-Get1 Ask for ten cells to be returned at most.
+    get1.setMaxResultsPerColumnFamily(10);
     Result result1 = table.get(get1);
     CellScanner scanner1 = result1.cellScanner();
     while (scanner1.advance()) {
@@ -48,7 +52,8 @@ public class GetMaxResultsRowOffsetExample1 {
 
     Get get2 = new Get(Bytes.toBytes("row1"));
     get2.setMaxResultsPerColumnFamily(10);
-    get2.setRowOffsetPerColumnFamily(100); // co GetMaxResultsRowOffsetExample1-2-Get2 In addition, also skip the first 100 cells.
+    // co GetMaxResultsRowOffsetExample1-2-Get2 In addition, also skip the first 100 cells.
+    get2.setRowOffsetPerColumnFamily(100);
     Result result2 = table.get(get2);
     CellScanner scanner2 = result2.cellScanner();
     while (scanner2.advance()) {

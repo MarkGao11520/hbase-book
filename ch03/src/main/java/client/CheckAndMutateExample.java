@@ -1,6 +1,5 @@
 package client;
 
-// cc CheckAndMutateExample Example using the atomic check-and-mutate operations
 import java.io.IOException;
 
 import org.apache.hadoop.conf.Configuration;
@@ -18,6 +17,10 @@ import org.apache.hadoop.hbase.util.Bytes;
 
 import util.HBaseHelper;
 
+/**
+ * cc CheckAndMutateExample Example using the atomic check-and-mutate operations
+ * @author gaowenfeng
+ */
 public class CheckAndMutateExample {
 
   public static void main(String[] args) throws IOException {
@@ -55,19 +58,22 @@ public class CheckAndMutateExample {
     mutations.add(put);
     mutations.add(delete);
 
+    // co CheckAndMutateExample-1-Check1 Check if the column contains a value that is less than "val1". Here we receive "false" as the value is equal, but not lesser.
     boolean res1 = table.checkAndMutate(Bytes.toBytes("row1"),
       Bytes.toBytes("colfam2"), Bytes.toBytes("qual1"),
-      CompareFilter.CompareOp.LESS, Bytes.toBytes("val1"), mutations); // co CheckAndMutateExample-1-Check1 Check if the column contains a value that is less than "val1". Here we receive "false" as the value is equal, but not lesser.
+      CompareFilter.CompareOp.LESS, Bytes.toBytes("val1"), mutations);
     System.out.println("Mutate 1 successful: " + res1);
 
     Put put2 = new Put(Bytes.toBytes("row1"));
-    put2.addColumn(Bytes.toBytes("colfam2"), Bytes.toBytes("qual1"), // co CheckAndMutateExample-2-Put1 Update the checked column to have a value greater than what we check for.
+    // co CheckAndMutateExample-2-Put1 Update the checked column to have a value greater than what we check for.
+    put2.addColumn(Bytes.toBytes("colfam2"), Bytes.toBytes("qual1"),
       4, Bytes.toBytes("val2"));
     table.put(put2);
 
+    // co CheckAndMutateExample-3-Check2 Now "val1" is less than "val2" (binary comparison) and we expect "true" to be printed on the console.
     boolean res2 = table.checkAndMutate(Bytes.toBytes("row1"),
       Bytes.toBytes("colfam2"), Bytes.toBytes("qual1"),
-      CompareFilter.CompareOp.LESS, Bytes.toBytes("val1"), mutations); // co CheckAndMutateExample-3-Check2 Now "val1" is less than "val2" (binary comparison) and we expect "true" to be printed on the console.
+      CompareFilter.CompareOp.LESS, Bytes.toBytes("val1"), mutations);
     System.out.println("Mutate 2 successful: " + res2);
 
     // ^^ CheckAndMutateExample

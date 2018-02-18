@@ -1,6 +1,5 @@
 package client;
 
-// cc GetListErrorExample Example trying to read an erroneous column family
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +16,10 @@ import org.apache.hadoop.hbase.util.Bytes;
 
 import util.HBaseHelper;
 
+/**
+ * cc GetListErrorExample Example trying to read an erroneous column family
+ * @author gaowenfeng
+ */
 public class GetListErrorExample {
 
   public static void main(String[] args) throws IOException {
@@ -44,7 +47,8 @@ public class GetListErrorExample {
     gets.add(get1);
 
     Get get2 = new Get(row2);
-    get2.addColumn(cf1, qf1); // co GetListErrorExample-1-AddGets Add the Get instances to the list.
+    // co GetListErrorExample-1-AddGets Add the Get instances to the list.
+    get2.addColumn(cf1, qf1);
     gets.add(get2);
 
     Get get3 = new Get(row2);
@@ -53,11 +57,14 @@ public class GetListErrorExample {
 
     Get get4 = new Get(row2);
     /*[*/get4.addColumn(Bytes.toBytes("BOGUS"),/*]*/ qf2);
-    gets.add(get4); // co GetListErrorExample-2-AddBogus Add the bogus column family get.
+    // co GetListErrorExample-2-AddBogus Add the bogus column family get.
+    gets.add(get4);
 
-    Result[] results = table.get(gets); // co GetListErrorExample-3-Error An exception is thrown and the process is aborted.
+    // co GetListErrorExample-3-Error An exception is thrown and the process is aborted.
+    Result[] results = table.get(gets);
 
-    System.out.println("Result count: " + results.length); // co GetListErrorExample-4-SOUT This line will never reached!
+    // co GetListErrorExample-4-SOUT This line will never reached!
+    System.out.println("Result count: " + results.length);
     // ^^ GetListErrorExample
     table.close();
     connection.close();

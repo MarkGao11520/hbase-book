@@ -25,6 +25,7 @@ import org.apache.hadoop.hbase.util.Bytes;
 
 /**
  * Used by the book examples to generate tables and fill them with test data.
+ * @author gaowenfeng
  */
 public class HBaseHelper implements Closeable {
 

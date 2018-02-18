@@ -14,8 +14,12 @@ import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.util.Bytes;
 import util.HBaseHelper;
 
-// cc CRUDExamplePreV1API Example application using all of the basic access methods (before v1.0)
-@SuppressWarnings("deprecation") // because of old API usage
+
+/**
+ * // cc CRUDExamplePreV1API Example application using all of the basic access methods (before v1.0)
+ @SuppressWarnings("deprecation") // because of old API usage
+ @author gaowenfeng
+ */
 public class CRUDExamplePreV1API {
 
   public static void main(String[] args) throws IOException {

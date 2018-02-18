@@ -1,6 +1,5 @@
 package client;
 
-// cc MissingRegionExample Example of how missing regions are handled
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.HRegionLocation;
@@ -17,6 +16,10 @@ import util.HBaseHelper;
 
 import java.io.IOException;
 
+/**
+ * cc MissingRegionExample Example of how missing regions are handled
+ * @author gaowenfeng
+ */
 public class MissingRegionExample {
 
   private static Connection connection = null;
@@ -38,8 +41,12 @@ public class MissingRegionExample {
     }
   }
 
-    // vv MissingRegionExample
-    static class Getter implements Runnable { // co MissingRegionExample-1-Thread Use asynchronous thread to continuously read from the table.
+  /**
+   * MissingRegionExample
+   * // co MissingRegionExample-1-Thread Use asynchronous thread to continuously read from the table.
+   * @author gaowenfeng
+   */
+  static class Getter implements Runnable {
       @Override
       public void run() {
         try {
@@ -50,12 +57,14 @@ public class MissingRegionExample {
             table.get(get);
             long diff = System.currentTimeMillis() - time;
             if (diff > 1000) {
-              System.out.println("Wait time: " + diff + "ms"); // co MissingRegionExample-2-Print Print out waiting time if the get call was taking longer than a second to complete.
+              // co MissingRegionExample-2-Print Print out waiting time if the get call was taking longer than a second to complete.
+              System.out.println("Wait time: " + diff + "ms");
             } else {
               System.out.print(".");
             }
             try {
-              Thread.sleep(500); // co MissingRegionExample-3-Sleep1 Sleep for half a second.
+              // co MissingRegionExample-3-Sleep1 Sleep for half a second.
+              Thread.sleep(500);
             } catch (InterruptedException e) {
             }
           }
@@ -86,12 +95,14 @@ public class MissingRegionExample {
     // vv MissingRegionExample
     Admin admin = connection.getAdmin();
 
-    Thread thread = new Thread(new Getter()); // co MissingRegionExample-4-Start Start the asynchronous thread.
+    // co MissingRegionExample-4-Start Start the asynchronous thread.
+    Thread thread = new Thread(new Getter());
     thread.setDaemon(true);
     thread.start();
 
     try {
-      System.out.println("\nSleeping 3secs in main()..."); // co MissingRegionExample-5-Sleep2 Sleep for some time allow for the reading thread to print out some dots.
+      // co MissingRegionExample-5-Sleep2 Sleep for some time allow for the reading thread to print out some dots.
+      System.out.println("\nSleeping 3secs in main()...");
       Thread.sleep(3000);
     } catch (InterruptedException e) {
       // ignore
@@ -103,10 +114,13 @@ public class MissingRegionExample {
       Bytes.toBytes("row-050"));
     System.out.println("\nUnassigning region: " + location.getRegionInfo().
       getRegionNameAsString());
-    admin.closeRegion(location.getRegionInfo().getRegionName(), null); // co MissingRegionExample-6-Close Close the region containing the row the reading thread is retrieving. Note that unassign() does not work here because the master would automatically reopen the region when the thread is calling the get() method.
+    // co MissingRegionExample-6-Close Close the region containing the row the reading thread is retrieving.
+    // Note that unassign() does not work here because the master would automatically reopen the region when the thread is calling the get() method.
+    admin.closeRegion(location.getRegionInfo().getRegionName(), null);
 
     int count = 0;
-    while (locator.getAllRegionLocations().size() >= 3 && count++ < 10) // co MissingRegionExample-7-Check Use the number of online regions to confirm the close.
+    // co MissingRegionExample-7-Check Use the number of online regions to confirm the close.
+    while (locator.getAllRegionLocations().size() >= 3 && count++ < 10)
       try {
         System.out.println("\nWaiting for region to be offline in main()...");
         Thread.sleep(500);
@@ -115,14 +129,16 @@ public class MissingRegionExample {
 
     try {
       System.out.println("\nSleeping 10secs in main()...");
-      Thread.sleep(10000); // co MissingRegionExample-8-Sleep3 Sleep for another period of time to make the thread wait.
+      // co MissingRegionExample-8-Sleep3 Sleep for another period of time to make the thread wait.
+      Thread.sleep(10000);
     } catch (InterruptedException e) {
       // ignore
     }
 
     System.out.println("\nAssigning region: " + location.getRegionInfo().
       getRegionNameAsString());
-    admin.assign(location.getRegionInfo().getRegionName()); // co MissingRegionExample-9-Open Open the region, which will make the blocked get() in the thread wake up and print its waiting time.
+    // co MissingRegionExample-9-Open Open the region, which will make the blocked get() in the thread wake up and print its waiting time.
+    admin.assign(location.getRegionInfo().getRegionName());
 
     try {
       System.out.println("\nSleeping another 3secs in main()...");

@@ -1,6 +1,5 @@
 package client;
 
-// cc GetCloneExample Example application retrieving data from HBase
 import java.io.IOException;
 
 import org.apache.hadoop.conf.Configuration;
@@ -15,6 +14,10 @@ import org.apache.hadoop.hbase.util.Bytes;
 
 import util.HBaseHelper;
 
+/**
+ * cc GetCloneExample Example application retrieving data from HBase
+ * @author gaowenfeng
+ */
 public class GetCloneExample {
 
   public static void main(String[] args) throws IOException {

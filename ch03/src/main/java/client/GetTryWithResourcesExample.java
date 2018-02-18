@@ -1,6 +1,5 @@
 package client;
 
-// cc GetTryWithResourcesExample Example application retrieving data from HBase using a Java 7 construct
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.TableName;
@@ -14,11 +13,16 @@ import util.HBaseHelper;
 
 import java.io.IOException;
 
+/**
+ * cc GetTryWithResourcesExample Example application retrieving data from HBase using a Java 7 construct
+ * @author gaowenfeng
+ */
 public class GetTryWithResourcesExample {
 
   public static void main(String[] args) throws IOException {
     // vv GetTryWithResourcesExample
-    Configuration conf = HBaseConfiguration.create(); // co GetTryWithResourcesExample-1-CreateConf Create the configuration.
+    // co GetTryWithResourcesExample-1-CreateConf Create the configuration.
+    Configuration conf = HBaseConfiguration.create();
 
     // ^^ GetTryWithResourcesExample
     HBaseHelper helper = HBaseHelper.getHelper(conf);
@@ -28,7 +32,8 @@ public class GetTryWithResourcesExample {
     // vv GetTryWithResourcesExample
     try (
       Connection connection = ConnectionFactory.createConnection(conf);
-      Table table = connection.getTable(TableName.valueOf("testtable")); // co GetTryWithResourcesExample-2-NewTable Instantiate a new table reference in "try" block.
+      // co GetTryWithResourcesExample-2-NewTable Instantiate a new table reference in "try" block.
+      Table table = connection.getTable(TableName.valueOf("testtable"));
     ) {
       Get get = new Get(Bytes.toBytes("row1"));
       get.addColumn(Bytes.toBytes("colfam1"), Bytes.toBytes("qual1"));

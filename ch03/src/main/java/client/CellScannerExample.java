@@ -1,11 +1,14 @@
 package client;
 
-// cc CellScannerExample Shows how to use the cell scanner
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.CellScanner;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.util.Bytes;
 
+/**
+ * cc CellScannerExample Shows how to use the cell scanner
+ * @author gaowenfeng
+ */
 public class CellScannerExample {
 
   public static void main(String[] args) throws Exception {

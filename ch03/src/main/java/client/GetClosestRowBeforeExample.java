@@ -47,7 +47,8 @@ public class GetClosestRowBeforeExample {
     table.put(puts);
 
     // vv GetClosestRowBeforeExample
-    Get get1 = new Get(Bytes.toBytes("row3")); // co GetClosestRowBeforeExample-1-Get1 Attempt to read a row that does not exist.
+    // co GetClosestRowBeforeExample-1-Get1 Attempt to read a row that does not exist.
+    Get get1 = new Get(Bytes.toBytes("row3"));
     get1.addColumn(Bytes.toBytes("colfam1"), Bytes.toBytes("qual1"));
     Result result1 = table.get(get1);
 
@@ -59,7 +60,8 @@ public class GetClosestRowBeforeExample {
 
     Get get2 = new Get(Bytes.toBytes("row3"));
     get2.addColumn(Bytes.toBytes("colfam1"), Bytes.toBytes("qual1"));
-    get2.setClosestRowBefore(true); // co GetClosestRowBeforeExample-2-Get2 Instruct the get() call to fall back to the previous row, if necessary.
+      // co GetClosestRowBeforeExample-2-Get2 Instruct the get() call to fall back to the previous row, if necessary.
+    get2.setClosestRowBefore(true);
     Result result2 = table.get(get2);
 
     System.out.println("Get 2 isEmpty: " + result2.isEmpty());
@@ -68,7 +70,8 @@ public class GetClosestRowBeforeExample {
       System.out.println("Get 2 Cell: " + scanner2.current());
     }
 
-    Get get3 = new Get(Bytes.toBytes("row2")); // co GetClosestRowBeforeExample-3-Get3 Attempt to read a row that exists.
+    // co GetClosestRowBeforeExample-3-Get3 Attempt to read a row that exists.
+    Get get3 = new Get(Bytes.toBytes("row2"));
     get3.addColumn(Bytes.toBytes("colfam1"), Bytes.toBytes("qual1"));
     get3.setClosestRowBefore(true);
     Result result3 = table.get(get3);
@@ -79,7 +82,8 @@ public class GetClosestRowBeforeExample {
       System.out.println("Get 3 Cell: " + scanner3.current());
     }
 
-    Get get4 = new Get(Bytes.toBytes("row2")); // co GetClosestRowBeforeExample-4-Get4 Read exactly a row that exists.
+    // co GetClosestRowBeforeExample-4-Get4 Read exactly a row that exists.
+    Get get4 = new Get(Bytes.toBytes("row2"));
     get4.addColumn(Bytes.toBytes("colfam1"), Bytes.toBytes("qual1"));
     Result result4 = table.get(get4);
 

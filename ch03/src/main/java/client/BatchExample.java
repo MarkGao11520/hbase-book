@@ -1,6 +1,5 @@
 package client;
 
-// cc BatchExample Example application using batch operations
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +18,10 @@ import org.apache.hadoop.hbase.util.Bytes;
 
 import util.HBaseHelper;
 
+/**
+ * @author gaowenfeng
+ * cc BatchExample Example application using batch operations
+ */
 public class BatchExample {
 
   private final static byte[] ROW1 = Bytes.toBytes("row1");
@@ -47,33 +50,41 @@ public class BatchExample {
     Table table = connection.getTable(TableName.valueOf("testtable"));
 
     // vv BatchExample
-    List<Row> batch = new ArrayList<Row>(); // co BatchExample-1-CreateList Create a list to hold all values.
+    // co BatchExample-1-CreateList Create a list to hold all values.
+    List<Row> batch = new ArrayList<Row>();
 
     Put put = new Put(ROW2);
-    put.addColumn(COLFAM2, QUAL1, 4, Bytes.toBytes("val5")); // co BatchExample-2-AddPut Add a Put instance.
+    // co BatchExample-2-AddPut Add a Put instance.
+    put.addColumn(COLFAM2, QUAL1, 4, Bytes.toBytes("val5"));
     batch.add(put);
 
     Get get1 = new Get(ROW1);
-    get1.addColumn(COLFAM1, QUAL1); // co BatchExample-3-AddGet Add a Get instance for a different row.
+    // co BatchExample-3-AddGet Add a Get instance for a different row.
+    get1.addColumn(COLFAM1, QUAL1);
     batch.add(get1);
 
     Delete delete = new Delete(ROW1);
-    delete.addColumns(COLFAM1, QUAL2); // co BatchExample-4-AddDelete Add a Delete instance.
+    // co BatchExample-4-AddDelete Add a Delete instance.
+    delete.addColumns(COLFAM1, QUAL2);
     batch.add(delete);
 
     Get get2 = new Get(ROW2);
-    get2.addFamily(Bytes.toBytes("BOGUS")); // co BatchExample-5-AddBogus Add a Get instance that will fail.
+    // co BatchExample-5-AddBogus Add a Get instance that will fail.
+    get2.addFamily(Bytes.toBytes("BOGUS"));
     batch.add(get2);
 
-    Object[] results = new Object[batch.size()]; // co BatchExample-6-CreateResult Create result array.
+    // co BatchExample-6-CreateResult Create result array.
+    Object[] results = new Object[batch.size()];
     try {
       table.batch(batch, results);
     } catch (Exception e) {
-      System.err.println("Error: " + e); // co BatchExample-7-Print Print error that was caught.
+      // co BatchExample-7-Print Print error that was caught.
+      System.err.println("Error: " + e);
     }
 
+    // co BatchExample-8-Dump Print all results and class types.
     for (int i = 0; i < results.length; i++) {
-      System.out.println("Result[" + i + "]: type = " + // co BatchExample-8-Dump Print all results and class types.
+      System.out.println("Result[" + i + "]: type = " +
         results[i].getClass().getSimpleName() + "; " + results[i]);
     }
     // ^^ BatchExample

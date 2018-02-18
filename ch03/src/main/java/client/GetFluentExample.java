@@ -1,6 +1,5 @@
 package client;
 
-// cc GetFluentExample Creates a get request using its fluent interface
 import java.io.IOException;
 
 import org.apache.hadoop.conf.Configuration;
@@ -15,6 +14,10 @@ import org.apache.hadoop.hbase.util.Bytes;
 
 import util.HBaseHelper;
 
+/**
+ * cc GetFluentExample Creates a get request using its fluent interface
+ * @author gaowenfeng
+ */
 public class GetFluentExample {
 
   public static void main(String[] args) throws IOException {
@@ -35,7 +38,8 @@ public class GetFluentExample {
     Table table = connection.getTable(TableName.valueOf("testtable"));
 
     // vv GetFluentExample
-    Get get = new Get(Bytes.toBytes("row1")) // co GetFluentExample-1-Create Create a new get using the fluent interface.
+    // co GetFluentExample-1-Create Create a new get using the fluent interface.
+    Get get = new Get(Bytes.toBytes("row1"))
       .setId("GetFluentExample")
       .setMaxVersions()
       .setTimeStamp(1)
