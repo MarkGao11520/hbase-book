@@ -1,6 +1,5 @@
 package client;
 
-// cc ScanTimeoutExample Example timeout while using a scanner
 import java.io.IOException;
 
 import org.apache.hadoop.conf.Configuration;
@@ -16,6 +15,10 @@ import org.apache.hadoop.hbase.client.Table;
 
 import util.HBaseHelper;
 
+/**
+ * cc ScanTimeoutExample Example timeout while using a scanner
+ * @author gaowenfeng
+ */
 public class ScanTimeoutExample {
 
   public static void main(String[] args) throws IOException {
@@ -34,14 +37,16 @@ public class ScanTimeoutExample {
     Scan scan = new Scan();
     ResultScanner scanner = table.getScanner(scan);
 
+    // co ScanTimeoutExample-1-GetConf Get currently configured lease timeout.
     int scannerTimeout = (int) conf.getLong(
-      HConstants.HBASE_CLIENT_SCANNER_TIMEOUT_PERIOD, -1); // co ScanTimeoutExample-1-GetConf Get currently configured lease timeout.
+      HConstants.HBASE_CLIENT_SCANNER_TIMEOUT_PERIOD, -1);
     // ^^ ScanTimeoutExample
     System.out.println("Current (local) lease period: " + scannerTimeout + "ms");
     System.out.println("Sleeping now for " + (scannerTimeout + 5000) + "ms...");
     // vv ScanTimeoutExample
     try {
-      Thread.sleep(scannerTimeout + 5000); // co ScanTimeoutExample-2-Sleep Sleep a little longer than the lease allows.
+      // co ScanTimeoutExample-2-Sleep Sleep a little longer than the lease allows.
+      Thread.sleep(scannerTimeout + 5000);
     } catch (InterruptedException e) {
       // ignore
     }
@@ -51,8 +56,11 @@ public class ScanTimeoutExample {
     while (true){
       try {
         Result result = scanner.next();
-        if (result == null) break;
-        System.out.println(result); // co ScanTimeoutExample-3-Dump Print row content.
+        if (result == null) {
+          break;
+        }
+        // co ScanTimeoutExample-3-Dump Print row content.
+        System.out.println(result);
       } catch (Exception e) {
         e.printStackTrace();
         break;
