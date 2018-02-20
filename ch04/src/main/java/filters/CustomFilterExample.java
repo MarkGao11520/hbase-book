@@ -21,6 +21,10 @@ import org.apache.hadoop.hbase.util.Bytes;
 
 import util.HBaseHelper;
 
+/**
+ * 使用自定义过滤器
+ * @author gaowenfeng
+ */
 public class CustomFilterExample {
 
   public static void main(String[] args) throws IOException {

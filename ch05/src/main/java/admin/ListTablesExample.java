@@ -13,6 +13,11 @@ import org.apache.hadoop.hbase.client.ConnectionFactory;
 import util.HBaseHelper;
 
 // cc ListTablesExample Example listing the existing tables and their descriptors
+
+/**
+ * 获取所有已建表的表结构
+ * @author gaowenfeng
+ */
 public class ListTablesExample {
 
   public static void main(String[] args) throws IOException, InterruptedException {

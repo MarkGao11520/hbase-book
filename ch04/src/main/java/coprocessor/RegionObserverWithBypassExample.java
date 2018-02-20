@@ -16,6 +16,11 @@ import org.apache.hadoop.hbase.regionserver.HRegion;
 import org.apache.hadoop.hbase.util.Bytes;
 
 // cc RegionObserverWithBypassExample Example region observer checking for special get requests and bypassing further processing
+
+/**
+ * region observer 检查特殊的get请求并跳过之后的处理过程
+ * @author gaowenfeng
+ */
 public class RegionObserverWithBypassExample extends BaseRegionObserver {
   public static final Log LOG = LogFactory.getLog(HRegion.class);
   public static final byte[] FIXED_ROW = Bytes.toBytes("@@@GETTIME@@@");
@@ -27,13 +32,16 @@ public class RegionObserverWithBypassExample extends BaseRegionObserver {
     // vv RegionObserverWithBypassExample
     if (Bytes.equals(get.getRow(), FIXED_ROW)) {
       long time = System.currentTimeMillis();
-      Cell cell = CellUtil.createCell(get.getRow(), FIXED_ROW, FIXED_ROW, // co RegionObserverWithBypassExample-1-Cell Create cell directly using the supplied utility.
+      // co RegionObserverWithBypassExample-1-Cell Create cell directly using the supplied utility.
+      Cell cell = CellUtil.createCell(get.getRow(), FIXED_ROW, FIXED_ROW,
         time, KeyValue.Type.Put.getCode(), Bytes.toBytes(time));
       // ^^ RegionObserverWithBypassExample
       LOG.debug("Had a match, adding fake cell: " + cell);
       // vv RegionObserverWithBypassExample
       results.add(cell);
-      /*[*/e.bypass();/*]*/ // co RegionObserverWithBypassExample-2-Bypass Once the special cell is inserted all subsequent coprocessors are skipped.
+      // co RegionObserverWithBypassExample-2-Bypass Once the special cell is inserted all subsequent coprocessors are skipped.
+      // 一旦特殊的keyValue被添加，之后的操作都会被跳过
+      /*[*/e.bypass();/*]*/
     }
     // ^^ RegionObserverWithBypassExample
   }

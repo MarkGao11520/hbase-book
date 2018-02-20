@@ -12,6 +12,11 @@ import org.apache.hadoop.hbase.client.ConnectionFactory;
 import org.apache.hadoop.hbase.util.Bytes;
 
 // cc ClusterStatusExample Example reporting the status of a cluster
+
+/**
+ * 获取集群状态
+ * @author gaowenfeng
+ */
 public class ClusterStatusExample {
 
   public static void main(String[] args) throws IOException, InterruptedException {
@@ -21,7 +26,9 @@ public class ClusterStatusExample {
     Admin admin = connection.getAdmin();
 
     // vv ClusterStatusExample
-    ClusterStatus status = admin.getClusterStatus(); // co ClusterStatusExample-1-GetStatus Get the cluster status.
+      // co ClusterStatusExample-1-GetStatus Get the cluster status.
+      // 获取ClusterStatus实例以获得集群状态
+    ClusterStatus status = admin.getClusterStatus();
 
     System.out.println("Cluster Status:\n--------------");
     System.out.println("HBase Version: " + status.getHBaseVersion());
@@ -47,14 +54,18 @@ public class ClusterStatusExample {
       Arrays.asList(status.getMasterCoprocessors()));
 
     System.out.println("\nServer Info:\n--------------");
-    for (ServerName server : status.getServers()) { // co ClusterStatusExample-2-ServerInfo Iterate over the included server instances.
+      // co ClusterStatusExample-2-ServerInfo Iterate over the included server instances.
+      // 迭代所有服务器的信息
+    for (ServerName server : status.getServers()) {
       System.out.println("Hostname: " + server.getHostname());
       System.out.println("Host and Port: " + server.getHostAndPort());
       System.out.println("Server Name: " + server.getServerName());
       System.out.println("RPC Port: " + server.getPort());
       System.out.println("Start Code: " + server.getStartcode());
 
-      ServerLoad load = status.getLoad(server); // co ClusterStatusExample-3-ServerLoad Retrieve the load details for the current server.
+      // co ClusterStatusExample-3-ServerLoad Retrieve the load details for the current server.
+        // 获取当前服务器负载信息
+        ServerLoad load = status.getLoad(server);
 
       System.out.println("\nServer Load:\n--------------");
       System.out.println("Info Port: " + load.getInfoServerPort());
@@ -100,11 +111,15 @@ public class ClusterStatusExample {
         load.getReplicationLoadSourceList());
 
       System.out.println("\nRegion Load:\n--------------");
-      for (Map.Entry<byte[], RegionLoad> entry : // co ClusterStatusExample-4-Regions Iterate over the region details of the current server.
+        // co ClusterStatusExample-4-Regions Iterate over the region details of the current server.
+        // 迭代当前服务器所有的region信息
+      for (Map.Entry<byte[], RegionLoad> entry :
           load.getRegionsLoad().entrySet()) {
         System.out.println("Region: " + Bytes.toStringBinary(entry.getKey()));
 
-        RegionLoad regionLoad = entry.getValue(); // co ClusterStatusExample-5-RegionLoad Get the load details for the current region.
+          // co ClusterStatusExample-5-RegionLoad Get the load details for the current region.
+          // 获取当前region的负载信息
+        RegionLoad regionLoad = entry.getValue();
 
         System.out.println("Name: " + Bytes.toStringBinary(
           regionLoad.getName()));

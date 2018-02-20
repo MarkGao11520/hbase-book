@@ -22,7 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 // cc RowCountEndpoint Example endpoint implementation, adding a row and cell count method.
-// vv RowCountEndpoint
+
+/**
+ * endpoint实现增加了行和cell的计数方法
+ * @author gaowenfeng
+ */
 public class RowCountEndpoint extends RowCounterProtos.RowCountService
   implements Coprocessor, CoprocessorService {
 

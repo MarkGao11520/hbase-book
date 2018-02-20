@@ -15,6 +15,11 @@ import org.apache.hadoop.hbase.util.Bytes;
 import util.HBaseHelper;
 
 // cc TableOperationsExample Example using the various calls to disable, enable, and check that status of a table
+
+/**
+ * 禁用，启用和检查表的状态
+ * @author gaowenfeng
+ */
 public class TableOperationsExample {
 
   public static void main(String[] args) throws IOException, InterruptedException {

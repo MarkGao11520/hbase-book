@@ -17,11 +17,13 @@ import org.apache.hadoop.hbase.regionserver.HRegion;
 import org.apache.hadoop.hbase.util.Bytes;
 
 // cc RegionObserverExample Example region observer checking for special get requests
-// vv RegionObserverExample
+
+/**
+ * 检查特殊get请求的region server
+ * @author gaowenfeng
+ */
 public class RegionObserverExample extends BaseRegionObserver {
-  // ^^ RegionObserverExample
   public static final Log LOG = LogFactory.getLog(HRegion.class);
-  // vv RegionObserverExample
   public static final byte[] FIXED_ROW = Bytes.toBytes("@@@GETTIME@@@");
 
   @Override
@@ -30,17 +32,23 @@ public class RegionObserverExample extends BaseRegionObserver {
     // ^^ RegionObserverExample
     LOG.debug("Got preGet for row: " + Bytes.toStringBinary(get.getRow()));
     // vv RegionObserverExample
-    if (Bytes.equals(get.getRow(), FIXED_ROW)) { // co RegionObserverExample-1-Check Check if the request row key matches a well known one.
+    // co RegionObserverExample-1-Check Check if the request row key matches a well known one.
+    // 检查请求的行健是否匹配
+    if (Bytes.equals(get.getRow(), FIXED_ROW)) {
       Put put = new Put(get.getRow());
-      put.addColumn(FIXED_ROW, FIXED_ROW, // co RegionObserverExample-2-Cell Create cell indirectly using a Put instance.
+      // co RegionObserverExample-2-Cell Create cell indirectly using a Put instance.
+      put.addColumn(FIXED_ROW, FIXED_ROW,
         Bytes.toBytes(System.currentTimeMillis()));
       CellScanner scanner = put.cellScanner();
       scanner.advance();
-      Cell cell = scanner.current(); // co RegionObserverExample-3-Current Get first cell from Put using the CellScanner instance.
+      // co RegionObserverExample-3-Current Get first cell from Put using the CellScanner instance.
+      Cell cell = scanner.current();
       // ^^ RegionObserverExample
       LOG.debug("Had a match, adding fake cell: " + cell);
       // vv RegionObserverExample
-      results.add(cell); // co RegionObserverExample-4-Create Create a special KeyValue instance containing just the current time on the server.
+      // co RegionObserverExample-4-Create Create a special KeyValue instance containing just the current time on the server.
+      // 创建一个特殊的KeyValue实例，只包含服务器的当前时间
+      results.add(cell);
     }
   }
 }

@@ -15,7 +15,11 @@ import org.apache.hadoop.hbase.client.ConnectionFactory;
 import util.HBaseHelper;
 
 // cc LoadWithTableDescriptorExample Load a coprocessor using the table descriptor
-// vv LoadWithTableDescriptorExample
+
+/**
+ * 检查特定get请求的region observer
+ * @author gaowenfeng
+ */
 public class LoadWithTableDescriptorExample {
 
   public static void main(String[] args) throws IOException {
@@ -27,16 +31,24 @@ public class LoadWithTableDescriptorExample {
     // vv LoadWithTableDescriptorExample
     TableName tableName = TableName.valueOf("testtable");
 
-    HTableDescriptor htd = new HTableDescriptor(tableName); // co LoadWithTableDescriptorExample-1-Define Define a table descriptor.
+    // co LoadWithTableDescriptorExample-1-Define Define a table descriptor.
+    // 定义表描述符
+    HTableDescriptor htd = new HTableDescriptor(tableName);
     htd.addFamily(new HColumnDescriptor("colfam1"));
-    htd.setValue("COPROCESSOR$1", "|" + // co LoadWithTableDescriptorExample-2-AddCP Add the coprocessor definition to the descriptor, while omitting the path to the JAR file.
+    // co LoadWithTableDescriptorExample-2-AddCP Add the coprocessor definition to the descriptor, while omitting the path to the JAR file.
+    // 将协处理器定义添加到描述符，同时省略jar文件路径的定义
+    htd.setValue("COPROCESSOR$1", "|" +
       RegionObserverExample.class.getCanonicalName() +
       "|" + Coprocessor.PRIORITY_USER);
 
-    Admin admin = connection.getAdmin(); // co LoadWithTableDescriptorExample-3-Admin Acquire an administrative API to the cluster and add the table.
+    // co LoadWithTableDescriptorExample-3-Admin Acquire an administrative API to the cluster and add the table.
+    // 创建集群的管理API并添加这个表
+    Admin admin = connection.getAdmin();
     admin.createTable(htd);
 
-    System.out.println(admin.getTableDescriptor(tableName)); // co LoadWithTableDescriptorExample-4-Check Verify if the definition has been applied as expected.
+    // co LoadWithTableDescriptorExample-4-Check Verify if the definition has been applied as expected.
+    // 检查定义的协处理器是否被正确添加
+    System.out.println(admin.getTableDescriptor(tableName));
     admin.close();
     connection.close();
   }

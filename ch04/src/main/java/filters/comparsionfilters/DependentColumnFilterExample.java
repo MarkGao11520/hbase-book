@@ -1,6 +1,5 @@
-package filters;
+package filters.comparsionfilters;
 
-// cc DependentColumnFilterExample Example using a filter to include only specific column families
 import java.io.IOException;
 
 import org.apache.hadoop.conf.Configuration;
@@ -24,18 +23,31 @@ import org.apache.hadoop.hbase.util.Bytes;
 
 import util.HBaseHelper;
 
+/**
+ * cc DependentColumnFilterExample Example using a filter to include only specific column families
+ * 参考列过滤器
+ * @author gaowenfeng
+ */
 public class DependentColumnFilterExample {
 
   private static Table table = null;
 
-  // vv DependentColumnFilterExample
+  /**
+   * 使用不同参数创建过滤器
+   * @param drop 决定参考列被返回还是被丢弃 true 丢弃 false 返回
+   * @param operator 比较运算符
+   * @param comparator 比较器
+   * @throws IOException
+   */
   private static void filter(boolean drop,
       CompareFilter.CompareOp operator,
       ByteArrayComparable comparator)
   throws IOException {
     Filter filter;
     if (comparator != null) {
-      filter = new DependentColumnFilter(Bytes.toBytes("colfam1"), // co DependentColumnFilterExample-1-CreateFilter Create the filter with various options.
+      // 使用多个参数创建过滤器
+      // co DependentColumnFilterExample-1-CreateFilter Create the filter with various options.
+      filter = new DependentColumnFilter(Bytes.toBytes("colfam1"),
         Bytes.toBytes("col-5"), drop, operator, comparator);
     } else {
       filter = new DependentColumnFilter(Bytes.toBytes("colfam1"),
@@ -88,7 +100,9 @@ public class DependentColumnFilterExample {
     table = connection.getTable(TableName.valueOf("testtable"));
     // vv DependentColumnFilterExample
     filter(true, CompareFilter.CompareOp.NO_OP, null);
-    filter(false, CompareFilter.CompareOp.NO_OP, null); // co DependentColumnFilterExample-2-Filter Call filter method with various options.
+    // co DependentColumnFilterExample-2-Filter Call filter method with various options.
+    // 使用多个参数调用过滤器方法
+    filter(false, CompareFilter.CompareOp.NO_OP, null);
     filter(true, CompareFilter.CompareOp.EQUAL,
       new BinaryPrefixComparator(Bytes.toBytes("val-5")));
     filter(false, CompareFilter.CompareOp.EQUAL,

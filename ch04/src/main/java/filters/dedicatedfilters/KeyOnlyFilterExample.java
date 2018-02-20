@@ -1,6 +1,5 @@
-package filters;
+package filters.dedicatedfilters;
 
-// cc KeyOnlyFilterExample Only returns the first found cell from each row
 import java.io.IOException;
 
 import org.apache.hadoop.conf.Configuration;
@@ -18,6 +17,10 @@ import org.apache.hadoop.hbase.filter.KeyOnlyFilter;
 import org.apache.hadoop.hbase.util.Bytes;
 import util.HBaseHelper;
 
+/**
+ * cc KeyOnlyFilterExample Only returns the first found cell from each row
+ * @author gaowenfeng
+ */
 public class KeyOnlyFilterExample {
 
   private static Table table;
@@ -50,8 +53,8 @@ public class KeyOnlyFilterExample {
     helper.dropTable("testtable");
     helper.createTable("testtable", "colfam1");
     System.out.println("Adding rows to table...");
-    helper.fillTableRandom("testtable", /* row */ 1, 5, 0,
-       /* col */ 1, 30, 0,  /* val */ 0, 10000, 0, true, "colfam1");
+    helper.fillTableRandom("testtable", 1, 5, 0,
+        1, 30, 0,   0, 10000, 0, true, "colfam1");
 
     Connection connection = ConnectionFactory.createConnection(conf);
     table = connection.getTable(TableName.valueOf("testtable"));

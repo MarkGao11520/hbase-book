@@ -1,6 +1,5 @@
 package filters;
 
-// cc FilterListExample Example of using a filter list to combine single purpose filters
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +26,11 @@ import org.apache.hadoop.hbase.util.Bytes;
 
 import util.HBaseHelper;
 
+/**
+ * cc FilterListExample Example of using a filter list to combine single purpose filters
+ * 使用过滤器列表组合单一功能的过滤器
+ * @author gaowenfeng
+ */
 public class FilterListExample {
 
   public static void main(String[] args) throws IOException {

@@ -1,6 +1,5 @@
-package filters;
+package filters.dedicatedfilters;
 
-// cc SingleColumnValueFilterExample Example using a filter to return only rows with a given value in a given column
 import java.io.IOException;
 
 import org.apache.hadoop.conf.Configuration;
@@ -21,6 +20,11 @@ import org.apache.hadoop.hbase.util.Bytes;
 
 import util.HBaseHelper;
 
+/**
+ * cc SingleColumnValueFilterExample Example using a filter to return only rows with a given value in a given column
+ * 使用过滤器返回包含特定列中特定值的行
+ * @author gaowenfeng
+ */
 public class SingleColumnValueFilterExample {
 
   public static void main(String[] args) throws IOException {
@@ -35,6 +39,7 @@ public class SingleColumnValueFilterExample {
     Connection connection = ConnectionFactory.createConnection(conf);
     Table table = connection.getTable(TableName.valueOf("testtable"));
     // vv SingleColumnValueFilterExample
+    // 获取列族colfam1 的 单元格col-5 的值 不包含 字符串"val-5" 的行
     SingleColumnValueFilter filter = new SingleColumnValueFilter(
       Bytes.toBytes("colfam1"),
       Bytes.toBytes("col-5"),
@@ -57,7 +62,7 @@ public class SingleColumnValueFilterExample {
     }
     scanner.close();
 
-    Get get = new Get(Bytes.toBytes("row-6"));
+    Get get = new Get(Bytes.toBytes("row-5"));
     get.setFilter(filter);
     Result result = table.get(get);
     System.out.println("Result of get: ");

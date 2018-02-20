@@ -14,7 +14,12 @@ import org.apache.hadoop.hbase.util.Bytes;
 
 import util.HBaseHelper;
 
-// cc CreateTableExample Example using the administrative API to create a table
+// cc CreateTableExample Example using the administrative API to create a
+
+/**
+ * 使用客户端API建表
+ * @author gaowenfeng
+ */
 public class CreateTableExample {
 
   public static void main(String[] args) throws IOException, InterruptedException {
@@ -25,18 +30,28 @@ public class CreateTableExample {
     helper.dropTable("testtable");
     // vv CreateTableExample
     Connection connection = ConnectionFactory.createConnection(conf);
-    Admin admin = connection.getAdmin(); // co CreateTableExample-1-CreateAdmin Create a administrative API instance.
+    // co CreateTableExample-1-CreateAdmin Create a administrative API instance.
+    // 创建HBaseAdmin实例
+    Admin admin = connection.getAdmin();
 
     TableName tableName = TableName.valueOf("testtable");
-    HTableDescriptor desc = new HTableDescriptor(tableName); // co CreateTableExample-2-CreateHTD Create the table descriptor instance.
+    // co CreateTableExample-2-CreateHTD Create the table descriptor instance.
+    // 创建表描述符
+    HTableDescriptor desc = new HTableDescriptor(tableName);
 
-    HColumnDescriptor coldef = new HColumnDescriptor( // co CreateTableExample-3-CreateHCD Create a column family descriptor and add it to the table descriptor.
+    // co CreateTableExample-3-CreateHCD Create a column family descriptor and add it to the table descriptor.
+    // 添加列族描述符到表描述符中
+    HColumnDescriptor coldef = new HColumnDescriptor(
       Bytes.toBytes("colfam1"));
     desc.addFamily(coldef);
 
-    admin.createTable(desc); // co CreateTableExample-4-CreateTable Call the createTable() method to do the actual work.
+    // co CreateTableExample-4-CreateTable Call the createTable() method to do the actual work.
+    // 调用建表方法createTable()
+    admin.createTable(desc);
 
-    boolean avail = admin.isTableAvailable(tableName); // co CreateTableExample-5-Check Check if the table is available.
+    boolean avail = admin.isTableAvailable(tableName);
+    // co CreateTableExample-5-Check Check if the table is available.
+    // 检查表是否可用
     System.out.println("Table available: " + avail);
     // ^^ CreateTableExample
   }

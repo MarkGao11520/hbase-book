@@ -1,6 +1,5 @@
-package filters;
+package filters.dedicatedfilters;
 
-// cc ValueFilterExample Example using the value based filter
 import java.io.IOException;
 
 import org.apache.hadoop.conf.Configuration;
@@ -14,15 +13,17 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.client.Table;
-import org.apache.hadoop.hbase.filter.CompareFilter;
 import org.apache.hadoop.hbase.filter.Filter;
-import org.apache.hadoop.hbase.filter.SubstringComparator;
-import org.apache.hadoop.hbase.filter.ValueFilter;
+import org.apache.hadoop.hbase.filter.PrefixFilter;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import util.HBaseHelper;
 
-public class ValueFilterExample {
+/**
+ * cc PrefixFilterExample Example using the prefix based filter
+ * @author gaowenfeng
+ */
+public class PrefixFilterExample {
 
   public static void main(String[] args) throws IOException {
     Configuration conf = HBaseConfiguration.create();
@@ -35,19 +36,18 @@ public class ValueFilterExample {
 
     Connection connection = ConnectionFactory.createConnection(conf);
     Table table = connection.getTable(TableName.valueOf("testtable"));
-    // vv ValueFilterExample
-    Filter filter = new ValueFilter(CompareFilter.CompareOp.EQUAL, // co ValueFilterExample-1-Filter Create filter, while specifying the comparison operator and comparator.
-      new SubstringComparator(".4"));
+    // vv PrefixFilterExample
+    Filter filter = new PrefixFilter(Bytes.toBytes("row-1"));
 
     Scan scan = new Scan();
-    scan.setFilter(filter); // co ValueFilterExample-2-SetFilter Set filter for the scan.
+    scan.setFilter(filter);
     ResultScanner scanner = table.getScanner(scan);
-    // ^^ ValueFilterExample
+    // ^^ PrefixFilterExample
     System.out.println("Results of scan:");
-    // vv ValueFilterExample
+    // vv PrefixFilterExample
     for (Result result : scanner) {
       for (Cell cell : result.rawCells()) {
-        System.out.println("Cell: " + cell + ", Value: " + // co ValueFilterExample-3-Print1 Print out value to check that filter works.
+        System.out.println("Cell: " + cell + ", Value: " +
           Bytes.toString(cell.getValueArray(), cell.getValueOffset(),
             cell.getValueLength()));
       }
@@ -55,16 +55,16 @@ public class ValueFilterExample {
     scanner.close();
 
     Get get = new Get(Bytes.toBytes("row-5"));
-    get.setFilter(filter); // co ValueFilterExample-4-SetFilter2 Assign same filter to Get instance.
+    get.setFilter(filter);
     Result result = table.get(get);
-    // ^^ ValueFilterExample
+    // ^^ PrefixFilterExample
     System.out.println("Result of get: ");
-    // vv ValueFilterExample
+    // vv PrefixFilterExample
     for (Cell cell : result.rawCells()) {
       System.out.println("Cell: " + cell + ", Value: " +
         Bytes.toString(cell.getValueArray(), cell.getValueOffset(),
           cell.getValueLength()));
     }
-    // ^^ ValueFilterExample
+    // ^^ PrefixFilterExample
   }
 }

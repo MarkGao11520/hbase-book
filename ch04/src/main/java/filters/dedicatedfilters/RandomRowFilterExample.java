@@ -1,6 +1,5 @@
-package filters;
+package filters.dedicatedfilters;
 
-// cc PageFilterExample Example using a filter to paginate through rows
 import java.io.IOException;
 
 import org.apache.hadoop.conf.Configuration;
@@ -13,16 +12,16 @@ import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.client.Table;
 import org.apache.hadoop.hbase.filter.Filter;
-import org.apache.hadoop.hbase.filter.PageFilter;
+import org.apache.hadoop.hbase.filter.RandomRowFilter;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import util.HBaseHelper;
 
-public class PageFilterExample {
-
-  // vv PageFilterExample
-  private static final byte[] POSTFIX = new byte[] { 0x00 };
-  // ^^ PageFilterExample
+/**
+ * cc RandomRowFilterExample Example filtering rows randomly
+ * @author gaowenfeng
+ */
+public class RandomRowFilterExample {
 
   public static void main(String[] args) throws IOException {
     Configuration conf = HBaseConfiguration.create();
@@ -31,37 +30,28 @@ public class PageFilterExample {
     helper.dropTable("testtable");
     helper.createTable("testtable", "colfam1");
     System.out.println("Adding rows to table...");
-    helper.fillTable("testtable", 1, 1000, 10, "colfam1");
+    helper.fillTable("testtable", 1, 1000, 30, 0, true, "colfam1");
 
     Connection connection = ConnectionFactory.createConnection(conf);
     Table table = connection.getTable(TableName.valueOf("testtable"));
+    // vv RandomRowFilterExample
+    Filter filter = new RandomRowFilter(0.3f);
 
-    // vv PageFilterExample
-    Filter filter = new PageFilter(15);
-
-    int totalRows = 0;
-    byte[] lastRow = null;
-    while (true) {
+    for (int loop = 1; loop <= 3; loop++) {
       Scan scan = new Scan();
       scan.setFilter(filter);
-      if (lastRow != null) {
-        byte[] startRow = Bytes.add(lastRow, POSTFIX);
-        System.out.println("start row: " +
-          Bytes.toStringBinary(startRow));
-        scan.setStartRow(startRow);
-      }
       ResultScanner scanner = table.getScanner(scan);
-      int localRows = 0;
-      Result result;
-      while ((result = scanner.next()) != null) {
-        System.out.println(localRows++ + ": " + result);
-        totalRows++;
-        lastRow = result.getRow();
+      // ^^ RandomRowFilterExample
+      System.out.print("Results of scan for loop: " + loop);
+      // vv RandomRowFilterExample
+      int count = 0;
+      for (Result result : scanner) {
+        //        System.out.println(Bytes.toString(result.getRow()));
+        count++;
       }
+      System.out.print(" count: "+count+"\n");
       scanner.close();
-      if (localRows == 0) break;
     }
-    System.out.println("total rows: " + totalRows);
-    // ^^ PageFilterExample
+    // ^^ RandomRowFilterExample
   }
 }

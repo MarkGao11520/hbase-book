@@ -24,6 +24,11 @@ import util.HBaseHelper;
 import static coprocessor.generated.RowCounterProtos.*;
 
 // cc EndpointProxyExample Example using the proxy call of HTable to invoke an endpoint on a single region
+
+/**
+ * 使用HTable的代理代用单个region的endpoint
+ * @author gaowenfeng
+ */
 public class EndpointProxyExample {
 
   public static void main(String[] args) throws IOException {

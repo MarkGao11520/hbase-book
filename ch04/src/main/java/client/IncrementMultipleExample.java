@@ -18,6 +18,10 @@ import org.apache.hadoop.hbase.util.Bytes;
 
 import util.HBaseHelper;
 
+/**
+ * 增加一行中多个计数器的计数
+ * @author gaowenfeng
+ */
 public class IncrementMultipleExample {
 
   public static void main(String[] args) throws IOException {
@@ -33,7 +37,8 @@ public class IncrementMultipleExample {
     Increment increment1 = new Increment(Bytes.toBytes("20150101"));
 
     increment1.addColumn(Bytes.toBytes("daily"), Bytes.toBytes("clicks"), 1);
-    increment1.addColumn(Bytes.toBytes("daily"), Bytes.toBytes("hits"), 1); // co IncrementMultipleExample-1-Incr1 Increment the counters with various values.
+    // co IncrementMultipleExample-1-Incr1 Increment the counters with various values.
+    increment1.addColumn(Bytes.toBytes("daily"), Bytes.toBytes("hits"), 1);
     increment1.addColumn(Bytes.toBytes("weekly"), Bytes.toBytes("clicks"), 10);
     increment1.addColumn(Bytes.toBytes("weekly"), Bytes.toBytes("hits"), 10);
     // ^^ IncrementMultipleExample
@@ -49,18 +54,25 @@ public class IncrementMultipleExample {
     }
     // vv IncrementMultipleExample
 
-    Result result1 = table.increment(increment1); // co IncrementMultipleExample-2-Incr2 Call the actual increment method with the above counter updates and receive the results.
+    // co IncrementMultipleExample-2-Incr2 Call the actual increment method with the above counter updates and receive the results.
+    // 使用上述的计数器更新值调用实际的新增方法，并得到返回结果
+    Result result1 = table.increment(increment1);
 
     for (Cell cell : result1.rawCells()) {
+      // co IncrementMultipleExample-3-Dump1 Print the cell and returned counter value.
+      // 打印cell 和 返回的计数器的值
       System.out.println("Cell: " + cell +
         " Value: " + Bytes.toLong(cell.getValueArray(), cell.getValueOffset(),
-        cell.getValueLength())); // co IncrementMultipleExample-3-Dump1 Print the cell and returned counter value.
+        cell.getValueLength()));
     }
 
     Increment increment2 = new Increment(Bytes.toBytes("20150101"));
 
+
+    // co IncrementMultipleExample-4-Incr3 Use positive, negative, and zero increment values to achieve the wanted counter changes.
+    // 使用 正，负和零增加值来修改计数器值
     increment2.addColumn(Bytes.toBytes("daily"), Bytes.toBytes("clicks"), 5);
-    increment2.addColumn(Bytes.toBytes("daily"), Bytes.toBytes("hits"), 1); // co IncrementMultipleExample-4-Incr3 Use positive, negative, and zero increment values to achieve the wanted counter changes.
+    increment2.addColumn(Bytes.toBytes("daily"), Bytes.toBytes("hits"), 1);
     increment2.addColumn(Bytes.toBytes("weekly"), Bytes.toBytes("clicks"), 0);
     increment2.addColumn(Bytes.toBytes("weekly"), Bytes.toBytes("hits"), -5);
 

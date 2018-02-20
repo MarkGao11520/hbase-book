@@ -20,6 +20,10 @@ import coprocessor.generated.RowCounterProtos.CountResponse;
 import coprocessor.generated.RowCounterProtos.RowCountService;
 
 // cc EndpointBatchExample Example using the custom row-count endpoint in batch mode
+
+/**
+ * @author gaowenfeng
+ */
 public class EndpointBatchExample {
 
   public static void main(String[] args) throws IOException {
@@ -56,15 +60,15 @@ public class EndpointBatchExample {
     try {
       //vv EndpointBatchExample
       final CountRequest request = CountRequest.getDefaultInstance();
-      Map<byte[], CountResponse> results = /*[*/table.batchCoprocessorService(
+      Map<byte[], CountResponse> results = table.batchCoprocessorService(
         RowCountService.getDescriptor().findMethodByName("getRowCount"),
         request, HConstants.EMPTY_START_ROW, HConstants.EMPTY_END_ROW,
-        CountResponse.getDefaultInstance());/*]*/
+        CountResponse.getDefaultInstance());
 
       long total = 0;
-      for (Map.Entry<byte[], /*[*/CountResponse/*]*/> entry : results.entrySet()) {
-        /*[*/CountResponse response = entry.getValue();/*]*/
-        total += /*[*/response.hasCount() ? response.getCount() : 0;/*]*/
+      for (Map.Entry<byte[], CountResponse> entry : results.entrySet()) {
+        CountResponse response = entry.getValue();
+        total += response.hasCount() ? response.getCount() : 0;
         System.out.println("Region: " + Bytes.toString(entry.getKey()) +
           ", Count: " + entry.getValue());
       }

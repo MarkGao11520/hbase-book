@@ -16,7 +16,14 @@ import org.apache.hadoop.hbase.util.Pair;
 import util.HBaseHelper;
 
 // cc ModifyTableExample Example modifying the structure of an existing table
+
+/**
+ * 修改表结构
+ * @author gaowenfeng
+ */
 public class ModifyTableExample {
+  private static final Integer NUM_REGIONS = 50;
+  private static final Integer SLEEP_SECONDES = 500;
 
   public static void main(String[] args) throws IOException, InterruptedException {
     Configuration conf = HBaseConfiguration.create();
@@ -33,9 +40,13 @@ public class ModifyTableExample {
       .addFamily(coldef1)
       .setValue("Description", "Chapter 5 - ModifyTableExample: Original Table");
 
-    admin.createTable(desc, Bytes.toBytes(1L), Bytes.toBytes(10000L), 50); // co ModifyTableExample-1-CreateTable Create the table with the original structure and 50 regions.
+    // co ModifyTableExample-1-CreateTable Create the table with the original structure and 50 regions.
+    // 使用旧结构建表
+    admin.createTable(desc, Bytes.toBytes(1L), Bytes.toBytes(10000L), NUM_REGIONS);
 
-    HTableDescriptor htd1 = admin.getTableDescriptor(tableName); // co ModifyTableExample-2-SchemaUpdate Get schema, update by adding a new family and changing the maximum file size property.
+    // co ModifyTableExample-2-SchemaUpdate Get schema, update by adding a new family and changing the maximum file size property.
+    // 获取表结构，增加列族，并修改最大文件限制属性
+    HTableDescriptor htd1 = admin.getTableDescriptor(tableName);
     HColumnDescriptor coldef2 = new HColumnDescriptor("colfam2");
     htd1
       .addFamily(coldef2)
@@ -43,20 +54,24 @@ public class ModifyTableExample {
       .setValue("Description",
         "Chapter 5 - ModifyTableExample: Modified Table");
 
+    // co ModifyTableExample-3-ChangeTable Disable and modify the table.
+    // 禁用表，修改，然后启用表
     admin.disableTable(tableName);
-    admin.modifyTable(tableName, htd1); // co ModifyTableExample-3-ChangeTable Disable and modify the table.
+    admin.modifyTable(tableName, htd1);
 
-    Pair<Integer, Integer> status = new Pair<Integer, Integer>() {{ // co ModifyTableExample-4-Pair Create a status number pair to start the loop.
-      setFirst(50);
-      setSecond(50);
+    // co ModifyTableExample-4-Pair Create a status number pair to start the loop.
+    Pair<Integer, Integer> status = new Pair<Integer, Integer>() {{
+      setFirst(NUM_REGIONS);
+      setSecond(NUM_REGIONS);
     }};
-    for (int i = 0; status.getFirst() != 0 && i < 500; i++) {
-      status = admin.getAlterStatus(desc.getTableName()); // co ModifyTableExample-5-Loop Loop over status until all regions are updated, or 500 seconds have been exceeded.
+    for (int i = 0; status.getFirst() != 0 && i < SLEEP_SECONDES; i++) {
+      // co ModifyTableExample-5-Loop Loop over status until all regions are updated, or 500 seconds have been exceeded.
+      status = admin.getAlterStatus(desc.getTableName());
       if (status.getSecond() != 0) {
         int pending = status.getSecond() - status.getFirst();
         System.out.println(pending + " of " + status.getSecond()
           + " regions updated.");
-        Thread.sleep(1 * 1000l);
+        Thread.sleep(1 * 1000L);
       } else {
         System.out.println("All regions updated.");
         break;
@@ -69,7 +84,9 @@ public class ModifyTableExample {
     admin.enableTable(tableName);
 
     HTableDescriptor htd2 = admin.getTableDescriptor(tableName);
-    System.out.println("Equals: " + htd1.equals(htd2)); // co ModifyTableExample-6-Verify Check if the table schema matches the new one created locally.
+    // co ModifyTableExample-6-Verify Check if the table schema matches the new one created locally.
+    // 检查表结构是否已经修改成功
+    System.out.println("Equals: " + htd1.equals(htd2));
     System.out.println("New schema: " + htd2);
     // ^^ ModifyTableExample
   }

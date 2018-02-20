@@ -17,11 +17,13 @@ import org.apache.hadoop.hbase.regionserver.HRegion;
 import java.io.IOException;
 
 // cc MasterObserverExample Example master observer that creates a separate directory on the file system when a table is created.
-// vv MasterObserverExample
+
+/**
+ * 创建新表时创建一个单独的目录
+ * @author gaowenfeng
+ */
 public class MasterObserverExample extends BaseMasterObserver {
-  // ^^ MasterObserverExample
   public static final Log LOG = LogFactory.getLog(HRegion.class);
-  // vv MasterObserverExample
 
   @Override
   public void postCreateTable(
@@ -31,16 +33,21 @@ public class MasterObserverExample extends BaseMasterObserver {
     // ^^ MasterObserverExample
     LOG.debug("Got postCreateTable callback");
     // vv MasterObserverExample
-    TableName tableName = desc.getTableName(); // co MasterObserverExample-1-GetName Get the new table's name from the table descriptor.
+    // co MasterObserverExample-1-GetName Get the new table's name from the table descriptor.
+    // 从表描述符中获取表名
+    TableName tableName = desc.getTableName();
 
-    // ^^ MasterObserverExample
     LOG.debug("Created table: " + tableName + ", region count: " + regions.length);
-    // vv MasterObserverExample
+
     MasterServices services = ctx.getEnvironment().getMasterServices();
-    MasterFileSystem masterFileSystem = services.getMasterFileSystem(); // co MasterObserverExample-2-Services Get the available services and retrieve a reference to the actual file system.
+    // co MasterObserverExample-2-Services Get the available services and retrieve a reference to the actual file system.
+    // 获取可用的服务，同事取得真是文件系统的引用
+    MasterFileSystem masterFileSystem = services.getMasterFileSystem();
     FileSystem fileSystem = masterFileSystem.getFileSystem();
 
-    Path blobPath = new Path(tableName.getQualifierAsString() + "-blobs"); // co MasterObserverExample-3-Path Create a new directory that will store binary data from the client application.
+    // co MasterObserverExample-3-Path Create a new directory that will store binary data from the client application.
+    // 创建新目录用来存储客户端应用的二进制数据
+    Path blobPath = new Path(tableName.getQualifierAsString() + "-blobs");
     fileSystem.mkdirs(blobPath);
 
     // ^^ MasterObserverExample

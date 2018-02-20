@@ -9,6 +9,11 @@ import java.io.IOException;
 import java.util.Map;
 
 // cc HColumnDescriptorExample Example how to create a HColumnDescriptor in code
+
+/**
+ * 实例如何创建一个HColumnDescriptor
+ * @author gaowenfeng
+ */
 public class HColumnDescriptorExample {
 
   public static void main(String[] args) throws IOException, InterruptedException {
