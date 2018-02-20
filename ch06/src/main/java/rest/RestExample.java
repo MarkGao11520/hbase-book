@@ -16,6 +16,11 @@ import org.apache.hadoop.hbase.util.Bytes;
 import util.HBaseHelper;
 
 // cc RestExample Example of using the REST client classes
+
+/**
+ * REST 客户端使用实例
+ * @author gaowenfeng
+ */
 public class RestExample {
 
   public static void main(String[] args) throws IOException {
@@ -29,13 +34,21 @@ public class RestExample {
 
     // vv RestExample
     Cluster cluster = new Cluster();
-    cluster.add("localhost", 8080); // co RestExample-1-Cluster Set up a cluster list adding all known REST server hosts.
+    // co RestExample-1-Cluster Set up a cluster list adding all known REST server hosts.
+    // 设置已知的REST服务器集群地址列表
+    cluster.add("localhost", 8080);
 
-    Client client = new Client(cluster); // co RestExample-2-Client Create the client handling the HTTP communication.
+    // co RestExample-2-Client Create the client handling the HTTP communication.
+    // 创建处理HTTP交互的客户端
+    Client client = new Client(cluster);
 
-    RemoteHTable table = new RemoteHTable(client, "testtable"); // co RestExample-3-Table Create a remote table instance, wrapping the REST access into a familiar interface.
+    // co RestExample-3-Table Create a remote table instance, wrapping the REST access into a familiar interface.
+    // 创建RemoteHTable实例，将REST访问封装到一个熟悉的接口中
+    RemoteHTable table = new RemoteHTable(client, "testtable");
 
-    Get get = new Get(Bytes.toBytes("row-30")); // co RestExample-4-Get Perform a get operation as if it were a direct HBase connection.
+    // co RestExample-4-Get Perform a get operation as if it were a direct HBase connection.
+    // 执行一个get()操作，如同直接连接HBase的操作
+    Get get = new Get(Bytes.toBytes("row-30"));
     get.addColumn(Bytes.toBytes("colfam1"), Bytes.toBytes("col-3"));
     Result result1 = table.get(get);
 
@@ -45,7 +58,8 @@ public class RestExample {
     scan.setStartRow(Bytes.toBytes("row-10"));
     scan.setStopRow(Bytes.toBytes("row-15"));
     scan.addColumn(Bytes.toBytes("colfam1"), Bytes.toBytes("col-5"));
-    ResultScanner scanner = table.getScanner(scan); // co RestExample-5-Scan Scan the table, again, the same approach as if using the native Java API.
+    // co RestExample-5-Scan Scan the table, again, the same approach as if using the native Java API.
+    ResultScanner scanner = table.getScanner(scan);
 
     for (Result result2 : scanner) {
       System.out.println("Scan row[" + Bytes.toString(result2.getRow()) +
